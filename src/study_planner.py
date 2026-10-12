@@ -3,7 +3,8 @@ AI-Based Study Planner – Rational Agent (IA1 → IA2 Final Project)
 
 Covers:
 1. CSP timetable: variables, domains, constraints, backtracking, MRV, LCV,
-   forward checking and AC-3-style arc consistency.
+ 2
+     forward checking and AC-3-style arc consistency.
 2. Knowledge/reasoning: prerequisite rules, forward chaining, inference trace,
    and a simple uncertainty estimate.
 3. Applied/responsible AI: transparent explanations, fairness checks, and

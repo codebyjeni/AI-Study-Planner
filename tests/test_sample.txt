@@ -1,212 +1,246 @@
-# AI-Based Study Planner – Test Cases
+AI-Based Study Planner – Rational Agent (IA2)
+Test Cases and Expected Results
+Test Case 1 – Normal Input with Two Subjects
 
-## Test Case 1 – Normal Input
+Sample Input
 
-### Sample Input
+Number of subjects: 2
 
-```text
-Enter the number of subjects: 3
-Enter available study hours per day: 5
+Subject 1
+Subject name: fai
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 4
+Importance/weight (1-5): 4
+Required study hours: 3
+Prerequisites: 
+
+Subject 2
+Subject name: oops
+Deadline (YYYY-MM-DD): 2026-10-17
+Difficulty (1-5): 5
+Importance/weight (1-5): 5
+Required study hours: 3
+Prerequisites: 
+
+Study sessions available per day: 3
+
+Expected Result
+
+The system should accept both subjects and their details.
+Utility scores should be calculated using the implemented priority formula.
+The system should generate a seven-day timetable.
+Each subject should receive the required number of study sessions.
+The timetable should respect the daily session limit.
+The system should display completion-likelihood estimates and a search comparison.
+Test Case 2 – Different Subject Priorities
+
+Sample Input
+
+Number of subjects: 2
+
+Subject 1
+Subject name: fai
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 4
+Importance/weight (1-5): 4
+Required study hours: 3
+Prerequisites: 
+
+Subject 2
+Subject name: oops
+Deadline (YYYY-MM-DD): 2026-10-17
+Difficulty (1-5): 4
+Importance/weight (1-5): 3
+Required study hours: 2
+Prerequisites: 
+
+Study sessions available per day: 3
+
+Expected Result
+
+FAI should receive a higher priority score than OOPS based on the implemented formula.
+FAI should receive three study sessions and OOPS should receive two, assuming one session represents one required study hour.
+The timetable should distribute the five sessions across available slots.
+The daily session limit should not be exceeded.
+The system should display the priority score and completion-likelihood estimate for each subject.
+Test Case 3 – Single Subject Scheduling
+
+Sample Input
+
+Number of subjects: 1
 
 Subject 1
 Subject name: Python
-Deadline: 2026-09-25
-Difficulty: 3
-Priority/Weight: 4
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 3
+Importance/weight (1-5): 4
+Required study hours: 2
+Prerequisites: 
+
+Study sessions available per day: 3
+
+Expected Result
+
+Python should be the only subject in the timetable.
+Two required study sessions should be scheduled.
+The system should generate a seven-day timetable.
+Remaining days should be displayed as free or buffer time when no sessions are assigned.
+Utility and completion-likelihood estimates should be displayed for Python.
+Test Case 4 – Subject with Prerequisites
+
+Sample Input
+
+Number of subjects: 2
+
+Subject 1
+Subject name: Python
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 2
+Importance/weight (1-5): 3
+Required study hours: 2
+Prerequisites: 
 
 Subject 2
+Subject name: AI Basics
+Deadline (YYYY-MM-DD): 2026-10-17
+Difficulty (1-5): 4
+Importance/weight (1-5): 5
+Required study hours: 2
+Prerequisites: Python
+
+Study sessions available per day: 3
+
+Expected Result
+
+Python should be identified as having no prerequisites.
+AI Basics should depend on Python.
+The knowledge base should record the prerequisite relationship.
+Forward chaining should derive that Python's prerequisites are satisfied.
+AI Basics should only be considered ready after the prerequisite condition is satisfied, if prerequisite completion is enforced by the scheduler.
+The system should report a valid timetable or explain why the constraints cannot be satisfied.
+Test Case 5 – High-Difficulty Subject
+
+Sample Input
+
+Number of subjects: 2
+
+Subject 1
 Subject name: Mathematics
-Deadline: 2026-09-20
-Difficulty: 5
-Priority/Weight: 5
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 5
+Importance/weight (1-5): 5
+Required study hours: 3
+Prerequisites: 
 
-Subject 3
-Subject name: Java
-Deadline: 2026-09-30
-Difficulty: 2
-Priority/Weight: 3
-```
+Subject 2
+Subject name: English
+Deadline (YYYY-MM-DD): 2026-10-17
+Difficulty (1-5): 2
+Importance/weight (1-5): 2
+Required study hours: 2
+Prerequisites: 
 
-### Expected Result
+Study sessions available per day: 3
 
-* Mathematics should receive the highest utility score.
-* Python should receive the next priority.
-* Java should receive a lower priority.
-* A 7-day timetable should be generated.
-* Higher-utility subjects should receive more study time.
+Expected Result
 
----
+The utility function should consider the difficulty and importance values.
+Mathematics should receive higher priority if the formula gives greater weight to difficulty and importance.
+The CSP scheduler should assign the required sessions without exceeding the daily limit.
+The system should display the priority score for each subject.
+The completion-likelihood estimates should be identified as heuristic estimates rather than guaranteed probabilities.
+Test Case 6 – Baseline Backtracking vs Improved Search
 
-## Test Case 2 – One Subject
+Sample Input
 
-### Sample Input
-
-```text
-Enter the number of subjects: 1
-Enter available study hours per day: 3
+Number of subjects: 2
 
 Subject 1
 Subject name: Python
-Deadline: 2026-09-25
-Difficulty: 4
-Priority/Weight: 5
-```
-
-### Expected Result
-
-* Python should be the only subject in the timetable.
-* The timetable should be generated for 7 days.
-* The utility score should be calculated correctly.
-
----
-
-## Test Case 3 – Equal Priority
-
-### Sample Input
-
-```text
-Enter the number of subjects: 2
-Enter available study hours per day: 4
-
-Subject 1
-Subject name: Python
-Deadline: 2026-09-25
-Difficulty: 3
-Priority/Weight: 3
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 3
+Importance/weight (1-5): 4
+Required study hours: 2
+Prerequisites: 
 
 Subject 2
-Subject name: Java
-Deadline: 2026-09-25
-Difficulty: 3
-Priority/Weight: 3
-```
-
-### Expected Result
-
-* Both subjects should have the same utility score.
-* Both subjects should appear in the timetable.
-* The agent should allocate available study hours between them.
-
----
-
-## Test Case 4 – Very Close Deadline
-
-### Sample Input
-
-```text
-Enter the number of subjects: 2
-Enter available study hours per day: 5
-
-Subject 1
-Subject name: AI
-Deadline: 2026-09-18
-Difficulty: 3
-Priority/Weight: 4
-
-Subject 2
-Subject name: Java
-Deadline: 2026-10-10
-Difficulty: 5
-Priority/Weight: 5
-```
-
-### Expected Result
-
-* AI should have a high utility because its deadline is very close.
-* The agent should consider deadline urgency when prioritizing subjects.
-* A weekly timetable should be generated.
-
----
-
-## Test Case 5 – Different Difficulty Levels
-
-### Sample Input
-
-```text
-Enter the number of subjects: 3
-Enter available study hours per day: 6
-
-Subject 1
-Subject name: Python
-Deadline: 2026-09-30
-Difficulty: 1
-Priority/Weight: 3
-
-Subject 2
-Subject name: Machine Learning
-Deadline: 2026-09-30
-Difficulty: 5
-Priority/Weight: 3
-
-Subject 3
-Subject name: Java
-Deadline: 2026-09-30
-Difficulty: 2
-Priority/Weight: 3
-```
-
-### Expected Result
-
-* Machine Learning should have the highest utility among the three.
-* Difficulty should affect the utility score.
-* The timetable should give higher priority to Machine Learning.
-
----
-
-## Test Case 6 – Deadline Already Passed
-
-### Sample Input
-
-```text
-Enter the number of subjects: 1
-Enter available study hours per day: 3
-
-Subject 1
 Subject name: Database
-Deadline: 2026-09-10
-Difficulty: 4
-Priority/Weight: 4
-```
+Deadline (YYYY-MM-DD): 2026-10-17
+Difficulty (1-5): 2
+Importance/weight (1-5): 3
+Required study hours: 2
+Prerequisites: 
 
-### Expected Result
+Study sessions available per day: 3
 
-* The program should not crash.
-* Remaining days should be treated as 1.
-* The subject should receive a high utility score because the deadline has passed.
-* The timetable should still be generated.
+Expected Result
 
----
+The system should run plain backtracking.
+The system should also run the improved search using MRV, LCV, forward checking, and AC-3.
+Both approaches should find a valid timetable if the constraints are satisfiable.
+The system should display the number of search nodes and backtracks.
+AC-3 revision counts should be reported.
+Search-node counts may be equal when the problem is small or does not require much constraint propagation.
+Test Case 7 – Adaptive Replanning After a Missed Session
 
-## Test Case 7 – Low Study Hours
+Sample Input
 
-### Sample Input
-
-```text
-Enter the number of subjects: 3
-Enter available study hours per day: 1
+Number of subjects: 2
 
 Subject 1
-Subject name: Python
-Deadline: 2026-09-25
-Difficulty: 3
-Priority/Weight: 4
+Subject name: fai
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 4
+Importance/weight (1-5): 4
+Required study hours: 3
+Prerequisites: 
 
 Subject 2
-Subject name: Java
-Deadline: 2026-09-28
-Difficulty: 2
-Priority/Weight: 3
+Subject name: oops
+Deadline (YYYY-MM-DD): 2026-10-17
+Difficulty (1-5): 4
+Importance/weight (1-5): 3
+Required study hours: 2
+Prerequisites: 
 
-Subject 3
-Subject name: AI
-Deadline: 2026-10-01
-Difficulty: 5
-Priority/Weight: 5
-```
+Study sessions available per day: 3
 
-### Expected Result
+Expected Result
 
-* The total allocated study time should not exceed 1 hour per day.
-* The highest-utility subject should be considered first.
-* A 7-day timetable should be generated.
+The system should generate an initial timetable.
+The adaptive replanning module should simulate a missed study session.
+The system should attempt to generate a revised timetable.
+The revised timetable should preserve the daily session limit and other enabled constraints.
+The system should report whether replanning succeeded.
+If a session is missed, the scheduler should avoid silently treating that session as completed.
+Test Case 8 – Daily Session Capacity
 
+Sample Input
+
+Number of subjects: 2
+
+Subject 1
+Subject name: Mathematics
+Deadline (YYYY-MM-DD): 2026-10-15
+Difficulty (1-5): 5
+Importance/weight (1-5): 5
+Required study hours: 4
+Prerequisites: 
+
+Subject 2
+Subject name: Python
+Deadline (YYYY-MM-DD): 2026-10-17
+Difficulty (1-5): 3
+Importance/weight (1-5): 3
+Required study hours: 3
+Prerequisites: 
+
+Study sessions available per day: 2
+
+Expected Result
+
+The daily schedule should contain no more than two study sessions.
+The scheduler should distribute the seven required sessions across multiple days.
+All required sessions should be assigned if the overall timetable has enough available capacity and all other constraints are satisfiable.
+The system should report failure or scheduling limitations if a valid timetable cannot be generated.
+No subject should be silently omitted from the schedule.
