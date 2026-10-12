@@ -1,1 +1,212 @@
+# AI-Based Study Planner – Test Cases
+
+## Test Case 1 – Normal Input
+
+### Sample Input
+
+```text
+Enter the number of subjects: 3
+Enter available study hours per day: 5
+
+Subject 1
+Subject name: Python
+Deadline: 2026-09-25
+Difficulty: 3
+Priority/Weight: 4
+
+Subject 2
+Subject name: Mathematics
+Deadline: 2026-09-20
+Difficulty: 5
+Priority/Weight: 5
+
+Subject 3
+Subject name: Java
+Deadline: 2026-09-30
+Difficulty: 2
+Priority/Weight: 3
+```
+
+### Expected Result
+
+* Mathematics should receive the highest utility score.
+* Python should receive the next priority.
+* Java should receive a lower priority.
+* A 7-day timetable should be generated.
+* Higher-utility subjects should receive more study time.
+
+---
+
+## Test Case 2 – One Subject
+
+### Sample Input
+
+```text
+Enter the number of subjects: 1
+Enter available study hours per day: 3
+
+Subject 1
+Subject name: Python
+Deadline: 2026-09-25
+Difficulty: 4
+Priority/Weight: 5
+```
+
+### Expected Result
+
+* Python should be the only subject in the timetable.
+* The timetable should be generated for 7 days.
+* The utility score should be calculated correctly.
+
+---
+
+## Test Case 3 – Equal Priority
+
+### Sample Input
+
+```text
+Enter the number of subjects: 2
+Enter available study hours per day: 4
+
+Subject 1
+Subject name: Python
+Deadline: 2026-09-25
+Difficulty: 3
+Priority/Weight: 3
+
+Subject 2
+Subject name: Java
+Deadline: 2026-09-25
+Difficulty: 3
+Priority/Weight: 3
+```
+
+### Expected Result
+
+* Both subjects should have the same utility score.
+* Both subjects should appear in the timetable.
+* The agent should allocate available study hours between them.
+
+---
+
+## Test Case 4 – Very Close Deadline
+
+### Sample Input
+
+```text
+Enter the number of subjects: 2
+Enter available study hours per day: 5
+
+Subject 1
+Subject name: AI
+Deadline: 2026-09-18
+Difficulty: 3
+Priority/Weight: 4
+
+Subject 2
+Subject name: Java
+Deadline: 2026-10-10
+Difficulty: 5
+Priority/Weight: 5
+```
+
+### Expected Result
+
+* AI should have a high utility because its deadline is very close.
+* The agent should consider deadline urgency when prioritizing subjects.
+* A weekly timetable should be generated.
+
+---
+
+## Test Case 5 – Different Difficulty Levels
+
+### Sample Input
+
+```text
+Enter the number of subjects: 3
+Enter available study hours per day: 6
+
+Subject 1
+Subject name: Python
+Deadline: 2026-09-30
+Difficulty: 1
+Priority/Weight: 3
+
+Subject 2
+Subject name: Machine Learning
+Deadline: 2026-09-30
+Difficulty: 5
+Priority/Weight: 3
+
+Subject 3
+Subject name: Java
+Deadline: 2026-09-30
+Difficulty: 2
+Priority/Weight: 3
+```
+
+### Expected Result
+
+* Machine Learning should have the highest utility among the three.
+* Difficulty should affect the utility score.
+* The timetable should give higher priority to Machine Learning.
+
+---
+
+## Test Case 6 – Deadline Already Passed
+
+### Sample Input
+
+```text
+Enter the number of subjects: 1
+Enter available study hours per day: 3
+
+Subject 1
+Subject name: Database
+Deadline: 2026-09-10
+Difficulty: 4
+Priority/Weight: 4
+```
+
+### Expected Result
+
+* The program should not crash.
+* Remaining days should be treated as 1.
+* The subject should receive a high utility score because the deadline has passed.
+* The timetable should still be generated.
+
+---
+
+## Test Case 7 – Low Study Hours
+
+### Sample Input
+
+```text
+Enter the number of subjects: 3
+Enter available study hours per day: 1
+
+Subject 1
+Subject name: Python
+Deadline: 2026-09-25
+Difficulty: 3
+Priority/Weight: 4
+
+Subject 2
+Subject name: Java
+Deadline: 2026-09-28
+Difficulty: 2
+Priority/Weight: 3
+
+Subject 3
+Subject name: AI
+Deadline: 2026-10-01
+Difficulty: 5
+Priority/Weight: 5
+```
+
+### Expected Result
+
+* The total allocated study time should not exceed 1 hour per day.
+* The highest-utility subject should be considered first.
+* A 7-day timetable should be generated.
 
