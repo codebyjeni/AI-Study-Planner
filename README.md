@@ -1,245 +1,279 @@
-# AI-Based Study Planner – Rational Agent
+# 🎓 AI-Based Study Planner – Rational Agent
 
 ## 📌 Project Overview
 
-The **AI-Based Study Planner** is a Python-based Rational Agent that generates a personalized weekly study timetable based on the student's subjects, deadlines, difficulty levels, priorities, and available study hours.
+The **AI-Based Study Planner – Rational Agent** is an intelligent study scheduling system developed as an extension of the IA1 Study Planner into an IA2 final project.
 
-The agent uses a **utility-based decision-making approach** to determine which subjects should receive higher study priority.
+The system generates a study timetable based on subject difficulty, importance, deadlines, required study hours, and prerequisite relationships. It applies **Constraint Satisfaction Problem (CSP)** techniques and knowledge-based reasoning to create a feasible study schedule.
 
-## 🎯 Objective
+The planner also estimates the likelihood of completing each subject before its deadline and supports timetable replanning when a study session is missed.
 
-The main objective of this project is:
+## 🎯 Objectives
 
-> **To maximize coverage of urgent and high-priority topics before their deadlines.**
+* Generate an intelligent study timetable using CSP techniques.
+* Prioritize subjects based on difficulty, importance, and deadlines.
+* Schedule prerequisite subjects before dependent subjects.
+* Apply backtracking, Minimum Remaining Values (MRV), and Least Constraining Value (LCV).
+* Use forward checking and AC-3-style arc consistency to reduce invalid scheduling choices.
+* Apply forward chaining to derive knowledge-based facts.
+* Estimate the likelihood of completing subjects before their deadlines.
+* Support adaptive replanning after missed study sessions.
+* Provide transparent explanations and responsible AI recommendations.
 
-The system helps students organize their study time by automatically prioritizing subjects according to their importance, difficulty, and deadline urgency.
+## ✨ Features
 
-## 🧠 Rational Agent
+### 1. Intelligent Study Scheduling
 
-This project demonstrates the concept of a **Rational Agent in Artificial Intelligence**.
-
-The agent observes the available subject information and selects study tasks that maximize the calculated utility.
-
-### Agent Inputs
+The system generates a timetable using the following inputs:
 
 * Subject name
 * Deadline
-* Difficulty level
-* Priority/weight
-* Available study hours per day
+* Difficulty level (1–5)
+* Importance or weight (1–5)
+* Required study hours
+* Prerequisite subjects
+* Available study sessions per day
 
-### Agent Output
+### 2. Constraint Satisfaction Problem (CSP)
 
-* Utility score for each subject
-* Priority order of subjects
-* 7-day study timetable
-* Study hours allocated to each subject
-* Reasoning behind the agent's decisions
+The scheduling problem is represented using:
 
-## ⚙️ Utility Function
+| CSP Component          | Description                                                                                                   |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Variables              | Individual study-hour sessions                                                                                |
+| Domains                | Available day and session combinations                                                                        |
+| Constraints            | Unique session slots, deadlines, prerequisite ordering, and subject-spacing rules                             |
+| Backtracking           | Searches for a valid timetable                                                                                |
+| MRV                    | Selects the variable with the fewest legal values                                                             |
+| LCV                    | Prefers values intended to restrict other variables less                                                      |
+| Forward Checking       | Removes unavailable slots after an assignment                                                                 |
+| AC-3-style Propagation | Removes conflicting values from domains, with the current implementation primarily handling singleton domains |
 
-The agent calculates the utility score using:
+### 3. Knowledge-Based Reasoning
 
-```text
-Utility = (Priority × Difficulty × 10) / Remaining Days
-```
+The planner uses a simple rule-based knowledge system to identify:
 
-Where:
+* Subjects whose required study hours are complete.
+* Subjects with no prerequisites.
+* Subjects whose prerequisites have been completed.
 
-* **Priority** → Importance of the subject
-* **Difficulty** → Difficulty level from 1 to 5
-* **Remaining Days** → Number of days until the deadline
-* **10** → Scaling factor used to make the utility score easier to interpret
+It displays an inference trace to explain how facts are derived.
 
-A higher utility score indicates greater urgency and importance.
+### 4. Subject Priority Calculation
 
-## 🔄 Methodology
+The priority score is calculated using:
 
-The system follows these steps:
+**Priority = (Difficulty × Importance) / Days Left**
 
-1. Get the number of subjects from the user.
-2. Get the available study hours per day.
-3. Collect subject details.
-4. Calculate the remaining days until each deadline.
-5. Calculate the utility score.
-6. Sort subjects according to utility.
-7. Allocate study hours based on utility.
-8. Generate a 7-day timetable.
-9. Display the timetable.
-10. Explain why the agent's decision is rational.
+Higher-priority subjects receive greater consideration during scheduling.
 
-## 📊 Study Time Allocation
+### 5. Completion-Likelihood Estimation
 
-The agent allocates study time based on the utility score:
+The system estimates the likelihood of completing each subject before its deadline using:
 
-| Utility Score |      Study Time |
-| ------------- | --------------: |
-| 10 or above   |   Up to 2 hours |
-| 5 – 9.99      | Up to 1.5 hours |
-| Below 5       |    Up to 1 hour |
+* Remaining study hours
+* Available study slots
+* Subject difficulty
+* Calculated priority
 
-The allocation is also limited by the student's available study hours per day.
+The resulting percentage is a **heuristic estimate, not a statistically calibrated probability**.
+
+### 6. Baseline vs. Improved Search
+
+The project compares two scheduling approaches:
+
+* Plain backtracking
+* Backtracking with MRV, LCV, forward checking, and AC-3-style propagation
+
+It reports search nodes, backtracks, and arc-consistency revisions.
+
+### 7. Adaptive Replanning
+
+The system includes a basic replanning demonstration for missed study sessions. It generates a revised timetable for remaining subjects.
+
+**Current limitation:** The implementation regenerates the timetable rather than preserving all completed sessions and existing future assignments. Therefore, it demonstrates basic replanning but not complete progress-preserving adaptive scheduling.
+
+### 8. Responsible AI
+
+The planner provides explanations for its recommendations and highlights the importance of:
+
+* Accurate input data
+* Human review of scheduling recommendations
+* Fair distribution of study workload
+* Protecting students' private information
+* Understanding the limitations of heuristic estimates
 
 ## 🛠️ Technologies Used
 
-* **Python**
-* `datetime`
-* `timedelta`
-* Object-Oriented Programming
-* Utility-Based Rational Agent
-* Sorting and Decision-Making
+* **Programming Language:** Python
+* **Concepts:** Artificial Intelligence, Rational Agents, Constraint Satisfaction Problems, Knowledge-Based Systems
+* **Algorithms:** Backtracking, MRV, LCV, Forward Checking, AC-3-style Arc Consistency, Forward Chaining
+* **Data Structures:** Lists, Dictionaries, Sets, Tuples
+* **Modules:** `argparse`, `copy`, `json`, `dataclasses`, `datetime`, `typing`
+
+The current implementation uses Python's standard library and does not require external packages.
 
 ## 📂 Project Structure
 
 ```text
 AI-Study-Planner/
 │
-├── study_planner.py
+├── src/
+│   └── study_planner.py
+│
 ├── README.md
-└── .gitignore
+└── study_outcomes.json  (optional, if added in a future version)
 ```
 
-## ▶️ How to Run
+**Note:** The current code imports `json`, but it does not yet save study outcomes to `study_outcomes.json`.
 
-### 1. Clone the repository
+## ⚙️ Installation and Setup
+
+### Step 1: Install Python
+
+Install Python 3.10 or a compatible newer version.
+
+Check the installation:
 
 ```bash
-git clone <YOUR-GITHUB-REPOSITORY-URL>
+python --version
 ```
 
-### 2. Open the project folder
+### Step 2: Clone the Repository
+
+```bash
+git clone https://github.com/codebyjeni/AI-Study-Planner.git
+```
+
+### Step 3: Open the Project Folder
 
 ```bash
 cd AI-Study-Planner
 ```
 
-### 3. Run the Python program
+### Step 4: Run the Application
+
+Run the interactive study planner:
 
 ```bash
-python study_planner.py
+python src/study_planner.py
 ```
 
-### 4. Enter the required details
+Run the planner with sample data:
 
-The program asks for:
+```bash
+python src/study_planner.py --demo
+```
+
+## ▶️ How to Use
+
+1. Run the Python program.
+2. Enter the number of subjects.
+3. Enter each subject's name and deadline.
+4. Provide difficulty and importance ratings.
+5. Enter the required study hours.
+6. Specify prerequisite subjects, if applicable.
+7. Enter the number of study sessions available per day.
+8. Review the generated timetable.
+9. Examine the knowledge-based inference trace.
+10. Review completion-likelihood estimates.
+11. Compare baseline and improved search statistics.
+12. Review the missed-session replanning demonstration.
+
+For the demo mode, the program automatically uses predefined sample subjects.
+
+## 📊 Sample Output
+
+The following is an illustrative example of the output format. Actual results depend on the current date, input values, constraints, and search order.
 
 ```text
-Enter the number of subjects:
-Enter available study hours per day:
-Subject name:
-Deadline (YYYY-MM-DD):
-Difficulty (1 = Easy, 5 = Very Hard):
-Priority/Weight (1 = Low, 5 = Very High):
+=== AI-Based Study Planner – Rational Agent (IA2) ===
+
+=== CSP TIMETABLE (MRV + LCV + propagation) ===
+
+Monday:
+  Session 1: Mathematics (priority 5.0)
+  Session 3: Python (priority 2.5)
+
+Tuesday:
+  Session 1: AI Basics (priority 2.0)
+
+=== KNOWLEDGE BASE / FORWARD-CHAINING TRACE ===
+
+FACT/RULE: Python has no prerequisites.
+
+=== UNCERTAINTY / COMPLETION-LIKELIHOOD ESTIMATES ===
+
+Python: 85.0%
+  Explanation: Remaining hours and available slots influence the estimate.
+
+=== BASELINE VS IMPROVED SEARCH ===
+
+Plain backtracking: success
+MRV + LCV + forward checking + AC-3: success
+
+=== ADAPTIVE REPLANNING DEMO ===
+
+A revised timetable was generated.
+
+=== RESPONSIBLE AI NOTE ===
+
+Review recommendations yourself; the score may reflect inaccurate inputs.
+Avoid entering private student identifiers or sensitive personal information.
 ```
 
-## 💻 Sample Input
+*The values above are examples only and are not guaranteed to match the program's actual output.*
 
-```text
-Enter the number of subjects: 3
-Enter available study hours per day: 4
+## 🧠 AI Concepts Demonstrated
 
-Subject 1
-Subject name: Artificial Intelligence
-Deadline: 2026-09-25
-Difficulty: 5
-Priority/Weight: 5
+| AI Concept               | Application                                                    |
+| ------------------------ | -------------------------------------------------------------- |
+| Rational Agent           | Uses input information to make scheduling decisions            |
+| CSP                      | Represents study sessions, domains, and scheduling constraints |
+| Backtracking             | Searches for a valid assignment                                |
+| MRV                      | Selects a variable with fewer legal options                    |
+| LCV                      | Attempts to choose less restrictive values                     |
+| Forward Checking         | Removes conflicting domain values after assignments            |
+| Arc Consistency          | Applies AC-3-style domain reduction                            |
+| Knowledge Representation | Stores subject and prerequisite relationships                  |
+| Forward Chaining         | Derives facts using predefined rules                           |
+| Uncertainty Estimation   | Calculates heuristic completion-likelihood scores              |
+| Adaptive Planning        | Demonstrates timetable regeneration after a missed session     |
+| Responsible AI           | Explains recommendations and their limitations                 |
 
-Subject 2
-Subject name: Python
-Deadline: 2026-09-28
-Difficulty: 3
-Priority/Weight: 4
+## ⚠️ Limitations
 
-Subject 3
-Subject name: Database
-Deadline: 2026-10-02
-Difficulty: 2
-Priority/Weight: 3
-```
-
-## 📋 Sample Output
-
-```text
-============================================================
-          AI-BASED WEEKLY STUDY PLANNER
-============================================================
-
-Objective: Maximize coverage of urgent and high-priority
-topics before deadlines
-
-Available Study Hours Per Day: 4.0
-
-------------------------------------------------------------
-Thursday, 17-09-2026
-------------------------------------------------------------
-📚 Artificial Intelligence | 2 hour(s) | Utility Score: ...
-📚 Python | 1.5 hour(s) | Utility Score: ...
-📚 Database | 0.5 hour(s) | Utility Score: ...
-
-------------------------------------------------------------
-Friday, 18-09-2026
-------------------------------------------------------------
-📚 Artificial Intelligence | 2 hour(s) | Utility Score: ...
-📚 Python | 1.5 hour(s) | Utility Score: ...
-📚 Database | 0.5 hour(s) | Utility Score: ...
-```
-
-The exact utility scores and dates will change depending on the current date and user inputs.
-
-## 🤖 Why Is the Agent Rational?
-
-The agent is considered rational because it uses available information to make study-planning decisions based on utility.
-
-It considers:
-
-* **Priority** – important subjects receive more attention.
-* **Difficulty** – difficult subjects require more preparation.
-* **Deadline** – subjects with closer deadlines become more urgent.
-
-The agent then prioritizes subjects with higher utility scores and generates a timetable within the available daily study hours.
-
-## ✅ Advantages
-
-* Automatically prioritizes subjects.
-* Considers deadline urgency.
-* Considers subject difficulty.
-* Considers subject importance.
-* Generates a weekly timetable.
-* Demonstrates utility-based rational decision-making.
-* Simple and easy to use.
+* The timetable covers a configurable number of study days.
+* Subjects with deadlines outside the planning horizon may not receive a complete schedule.
+* The current AC-3 implementation is simplified and does not implement full general binary arc consistency.
+* The completion-likelihood percentage is heuristic rather than empirically validated.
+* Replanning regenerates a schedule and does not preserve all previous assignments.
+* The current version does not persist study outcomes to a JSON file.
+* The system relies on user-provided information and does not independently verify deadlines or completed hours.
 
 ## 🚀 Future Enhancements
 
-The project can be extended with:
+* Implement full AC-3 with explicit binary constraint relations.
+* Preserve completed sessions and unaffected future assignments during replanning.
+* Store study progress and outcomes in JSON or a database.
+* Add a graphical user interface or web dashboard.
+* Introduce automatic progress tracking and missed-session notifications.
+* Improve workload balancing and fairness analysis.
+* Evaluate completion estimates using real study data.
+* Generate visual timetable charts and progress reports.
 
-* Graphical user interface
-* Streamlit web application
-* Automatic timetable optimization
-* Break and revision scheduling
-* Progress tracking
-* Exam timetable integration
-* Machine learning-based study recommendations
-* Notifications and reminders
-* Database storage for student schedules
+## 🎓 Conclusion
 
-## 📚 AI Concepts Demonstrated
+The AI-Based Study Planner demonstrates how artificial intelligence techniques can be applied to academic scheduling. By combining CSP-based timetable generation, heuristic search, prerequisite reasoning, completion-likelihood estimation, and basic adaptive replanning, the project provides a foundation for an intelligent and explainable study planning system.
 
-This project demonstrates:
-
-* Rational Agents
-* Utility-Based Agents
-* Agent Decision Making
-* State and Environment
-* Goal-Oriented Planning
-* Priority-Based Scheduling
+The project also highlights the importance of responsible AI through transparent recommendations, human oversight, and privacy awareness.
 
 ## 👩‍💻 Author
 
 **Anslin Jeni**
 
-AI & Machine Learning Student
+GitHub: [codebyjeni](https://github.com/codebyjeni)
 
 ## 📄 License
 
-This project is created for **educational and academic purposes**.
-
+This project is intended for academic and educational purposes. A specific open-source license can be added if the project is intended for public reuse and distribution.
